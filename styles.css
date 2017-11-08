@@ -1,0 +1,158 @@
+
+/* TITLE */
+
+.title-area {
+	font-family: sans-serif;
+	text-align: center;
+	padding: 10px;
+}
+
+.main-title {
+	font-size: 24px;
+	margin: 0;
+	margin-top: 5px;
+}
+
+.sub-title {
+	font-size: 20px;
+	margin: 0;
+}
+
+/* SETTINGS */
+.settings-panel {
+	position: absolute;
+	width: 250px;
+	height: 475px;
+	border: 1px solid #dbdbdb;
+	border-radius: 1.5%;
+	margin: 0 10px 10px 10px;
+	background-color: #f7f7f7;
+}
+
+.gender-settings {
+	margin: 25px 0 10px 0;
+	background-color: #c1a3a0;
+	font-size: 0;
+}
+
+.gender-button {
+	font-size: 14px;
+	width: 33.3%;
+	margin: 0;
+	padding: 15px;
+	background-color: #c1a3a0;
+	border: 2px solid transparent;
+}
+
+.gender-button:hover {
+	background-color: #e0d1cf;
+}
+
+.gender-button:focus {
+	outline: none;
+}
+
+.category-settings {
+	margin: 50px 0 0 0;
+	background-color: #c1a3a0;
+	font-size: 0;
+}
+
+.category-button {
+	font-size: 14px;
+	width: 50%;
+	margin: 0;
+	padding: 15px;
+	background-color: #c1a3a0;
+	border: 2px solid transparent;
+}
+
+.category-button:hover {
+	background-color: #e0d1cf;
+}
+
+.category-button:focus {
+	outline: none;
+}
+
+.slideshow-settings {
+	margin: 50px 0 0 0;
+	font-size: 0;
+}
+
+.slideshow-text {
+	display: inline-block;
+	width: 33.3%;
+	font-size: 14px;
+	font-family: sans-serif;
+	line-height: 25px;
+	text-align: center;
+	background-color: #f7f7f7;
+}
+
+.slideshow-button {
+	font-size: 14px;
+	width: 33.3%;
+	margin: 0;
+	padding: 15px;
+	background-color: #c1a3a0;
+	border: 2px solid transparent;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.slideshow-button:hover {
+	background-color: #e0d1cf;
+}
+
+.slideshow-button:focus {
+	outline: none;
+}
+
+select {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	padding: 5px 15px;
+	font-size: 14px;
+	background-color: #f7f7f7;
+	text-align-last: center;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+select:focus {
+	outline: none;
+}
+
+.age-settings {
+	margin-top: 50px;
+	text-align: center;
+}
+
+/* inner button, add margins */
+.inner {
+	border-right: .5px dashed black;
+}
+
+/* selected settings buttons */
+.selected {
+	background-color: #e0d1cf;
+}
+
+/* MAP SETTINGS */
+
+.current-year {
+	text-align: center;
+	font-family: sans-serif;
+	font-size: 22px;
+	margin-top: -50px;
+}
+
+/* MAP */
+.map-panel {
+	margin: 20px 0 0 280px;
+}
+
+.map {
+	border: 1px solid #dbdbdb;
+	border-radius: 1.5%;
+}

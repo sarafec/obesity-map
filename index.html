@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="styles.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script>
+</head>
+<body>
+
+<!-- SETTINGS -->
+	<div class="settings-panel">
+		<div class="title-area">
+			<h1 class="main-title">Obesity Prevelence</h1>
+			<h2 class="sub-title">1990-2013</h2>
+		</div>
+		<div class="gender-settings">
+			<button data-gender="male" class="gender-button inner">Male</button>
+			<button data-gender="female" class="gender-button inner">Female</button>
+			<button data-gender="both" class="gender-button selected">Both</button>
+		</div>
+
+		<div class="category-settings">
+			<button data-metric="overweight" class="category-button inner">Overweight</button>
+			<button data-metric="obese" class="category-button selected">Obese</button>
+		</div>
+
+		<div class="slideshow-settings">
+			<div class="slideshow-text">Slideshow</div>
+			<button data-slideshow="on" class="slideshow-button inner">On</button>
+			<button data-slideshow="off" class="slideshow-button selected">Off</button>
+		</div>
+
+		<div class="age-settings">
+			<select class="age-select" name="age" id="">
+				<option data-age="36" value="age-standardized">2-19 years old (Standardized)</option>
+				<option data-age="38" value="age-standardized">20+ years old (Standardized)</option>
+				<option data-age="34" value="age-groupings">2-4 years old</option>
+				<option data-age="6" value="age-groupings">5-9 years old</option>
+				<option data-age="7" value="age-groupings">10-14 years old</option>
+				<option data-age="8" value="age-groupings">15-19 years old</option>
+				<option data-age="9" value="age-groupings">20-24 years old</option>
+				<option data-age="10" value="age-groupings">25-29 years old</option>
+				<option data-age="11" value="age-groupings">30-34 years old</option>
+				<option data-age="12" value="age-groupings">35-39 years old</option>
+				<option data-age="13" value="age-groupings">40-44 years old</option>
+				<option data-age="14" value="age-groupings">45-49 years old</option>
+				<option data-age="15" value="age-groupings">50-54 years old</option>
+				<option data-age="16" value="age-groupings">55-59 years old</option>
+				<option data-age="17" value="age-groupings">60-64 years old</option>
+				<option data-age="18" value="age-groupings">65-69 years old</option>
+				<option data-age="19" value="age-groupings">70-74 years old</option>
+				<option data-age="20" value="age-groupings">75-79 years old</option>
+				<option data-age="21" value="age-groupings">80+ years old</option>
+			</select>
+		</div>
+<!-- MAP -->
+	</div>
+	<div class="map-panel">
+		<svg class="map" viewBox="0 0 600 450"
+  preserveAspectRatio="xMidYMin meet"></svg>
+		<div class="year-buttons">
+			<div class="current-year">1990</div>
+		</div>
+	</div>
+
+	<div class="json-result"></div>
+</body>
+<script src="map.js"></script>
+
+</html>

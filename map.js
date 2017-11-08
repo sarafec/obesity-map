@@ -48,8 +48,10 @@ function drawMap() {
 		.attr('stroke', 'lightgrey')
 		.attr('stroke-width', .5)
 		// set initial fill value based on country idea and ui controls
-		.attr('fill', function(d, i) { return setFill(features[i].properties.country_id); });
-
+		.attr('fill', function(d, i) { return setFill(features[i].properties.country_id); })
+		.on('mouseover', function(d) { return tooltip.style('visibility', 'visible'); })
+		.on('mousemove', function(d, i) { return tooltip.style('top', (event.pageY - 10) + 'px').style('left', (event.pageX + 10) + 'px').html(getTooltipText(d)) })
+		.on('mouseout', function(d) { return tooltip.style('visibility', 'hidden'); });
 	});
 }
 
@@ -75,11 +77,12 @@ function setFill(countryId) {
 // note - this is an improvement to traversing inital data set (150 mil lookups down to 60k), can we make it better?
 function updateFill() {
 	let mapArea = document.querySelector('.map-area');
+	console.log(mapArea.children.length);
 	for(let i = 0; i < mapArea.children.length; i++) {
 		let countryId = mapArea.children[i].getAttribute('class');
 
 		if(countryId === '999') {
-			return '#D3D3D3';
+			mapArea.children[i].setAttribute('fill', '#D3D3D3');
 		} else {
 			let values = obesityObj[countryId][uiControlYear];
 
@@ -94,7 +97,7 @@ function updateFill() {
 
 // determine fill color using mean value
 function determineFillColor(mean) {
-	let realNum = (mean * 100).toFixed(1);
+	let realNum = +(mean * 100).toFixed(1);
 
 	switch(true) {
 		case realNum >= 0 && realNum <= 5:
@@ -121,6 +124,38 @@ function determineFillColor(mean) {
 		return '#D3D3D3';
 	}
 
+}
+
+/** TOOLTIP METHODS **/
+// define tooltip element
+let tooltip = d3.select('.map-panel')
+	.append('div')
+	.attr('class', 'tooltip')
+	.style('position', 'absolute')
+	.style('z-index', '10')
+	.style('visibility', 'hidden');
+
+// define tooltip text based on given data
+function getTooltipText(data) {
+	let countryName = data.properties.country_name;
+	let countryId = data.properties.country_id;
+	let meanVal;
+
+	// get mean values for countries
+	if(countryId === '999') {
+			return 'Country: ' + countryName + '<br>' + 'No data available';
+	} else {
+		let values = obesityObj[countryId][uiControlYear];
+
+		for(let i = 0; i < values.length; i++) {
+			if(values[i].gender === uiControlGender && values[i].age === uiControlAge && values[i].metric === uiControlMetric) {
+				// define mean value to the first decimal
+				meanVal = (values[i].mean * 100).toFixed(1);
+			}
+		}
+	}
+	
+	return 'Country: ' + countryName + '<br>' + 'Prevalence: ' + meanVal + '%';
 }
 
 /** UI EVENTS **/
@@ -205,18 +240,20 @@ function updateMetricControl(evt) {
 function updateSlideshowControl(evt) {
 	let slideshowArea = document.querySelector('.slideshow-settings');
 
-	// remove selected class from previous control
-	for(let i = 0; i < slideshowArea.children.length; i++){
-		if(slideshowArea.children[i].classList.contains('selected')) {
-			slideshowArea.children[i].classList.remove('selected');
-		}
-	}
-
 	// add class selcted to user selected metric button
 	let selectedBtn = evt.target;
-	selectedBtn.classList.add('selected');
+	if(selectedBtn.tagName === 'BUTTON') {
+		// remove selected class from previous control
+		for(let i = 0; i < slideshowArea.children.length; i++){
+			if(slideshowArea.children[i].classList.contains('selected')) {
+				slideshowArea.children[i].classList.remove('selected');
+			}
+		}
 
-	uiControlSlideShow = selectedBtn.dataset.slideshow;
+		// add selected class to current control
+		selectedBtn.classList.add('selected');
+		uiControlSlideShow = selectedBtn.dataset.slideshow;
+	}
 
 	// start slideshow while on button is selected
 	if(uiControlSlideShow === 'on') {
@@ -228,6 +265,7 @@ function updateSlideshowControl(evt) {
 function startSlideshow() {
 	let yearOnMap = document.querySelector('.current-year');
 	let slideshow = window.setInterval(function() {
+		// if on button is selected, cycle through the years
 		if(uiControlSlideShow === 'on') {
 			if(uiControlYear < 2013) {
 				uiControlYear++;
@@ -248,12 +286,10 @@ function startSlideshow() {
 
 
 //todo
-// 3 - add year to bottom of svg and arrows, update year in ui and data
-// 4 - add static range at bottom of map
-// 5 - add tooltips to map
-// 6 - add loading animation
-// 7 - add d3 zoom
-
+// 1 - add zoom to map
+// 2 - add color range element (svg)
+// 3 - modify year elements (svg)
+// 4 - add loading animation
 
 // loading - https://codepen.io/woodwork/pen/YWjWzo
 // loading - https://codepen.io/magnus16/pen/BKoRNw

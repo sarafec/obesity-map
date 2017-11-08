@@ -156,3 +156,11 @@ select:focus {
 	border: 1px solid #dbdbdb;
 	border-radius: 1.5%;
 }
+
+.tooltip {
+	background-color: #f0f0f0;
+	font-family: sans-serif;
+	padding: 4px;
+	border-radius: 4px;
+	color: #303030;
+}

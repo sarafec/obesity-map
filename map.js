@@ -1,7 +1,7 @@
 /** APP CONSTANTS **/
 let obesityObj = {};
 
-// ui constants
+// ui control constants
 let uiControlGender = 'male';
 let uiControlMetric = 'obese';
 let uiControlAge = '38';
@@ -13,8 +13,8 @@ let svg = d3.select('svg'),
 		margin = {top: 0, right: 0, bottom: 0, left: 0},
 		width = svg.attr('width') - margin.left - margin.right,
 		height = svg.attr('height') - margin.top - margin.bottom,
-		g = svg.append('g').attr('class', 'map-area')
-		yearControls = svg.append('g').attr('class', 'year-settings').attr('transform', 'translate(300, 415)')
+		g = svg.append('g').attr('class', 'map-area'),
+		yearControls = svg.append('g').attr('class', 'year-settings').attr('transform', 'translate(278, 415)'),
 		rangeElem = svg.append('g').attr('class', 'range-elem').attr('transform', 'translate(0, 435)');
 
 
@@ -355,9 +355,7 @@ function updateYearControl(evt) {
 
 
 //todo
-// 1 - add zoom to map
-// 2 - add color range element (svg)
-// 4 - add loading animation
+// 1 - add loading animation
 
 // loading - https://codepen.io/woodwork/pen/YWjWzo
 // loading - https://codepen.io/magnus16/pen/BKoRNw

@@ -31,7 +31,7 @@
 
 .gender-settings {
 	margin: 15px 0 10px 0;
-	background-color: #c1a3a0;
+	background-color: #e0d1cf;
 	font-size: 0;
 }
 
@@ -40,22 +40,24 @@
 	width: 33.3%;
 	margin: 0;
 	padding: 15px;
-	background-color: #c1a3a0;
+	background-color: #e0d1cf;
 	border: 2px solid transparent;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	cursor: pointer;
 }
 
 .gender-button:hover {
-	background-color: #e0d1cf;
+	background-color: #c1a3a0;
 }
 
 .gender-button:focus {
+	background-color: #c1a3a0;
 	outline: none;
 }
 
 .category-settings {
 	margin: 40px 0 0 0;
-	background-color: #c1a3a0;
+	background-color: #e0d1cf;
 	font-size: 0;
 }
 
@@ -64,16 +66,18 @@
 	width: 50%;
 	margin: 0;
 	padding: 15px;
-	background-color: #c1a3a0;
+	background-color: #e0d1cf;
 	border: 2px solid transparent;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	cursor: pointer;
 }
 
 .category-button:hover {
-	background-color: #e0d1cf;
+	background-color: #c1a3a0;
 }
 
 .category-button:focus {
+	background-color: #c1a3a0;
 	outline: none;
 }
 
@@ -89,6 +93,7 @@
 	font-family: sans-serif;
 	line-height: 25px;
 	text-align: center;
+	user-select: none;
 	background-color: #f7f7f7;
 }
 
@@ -97,17 +102,18 @@
 	width: 33.3%;
 	margin: 0;
 	padding: 15px;
-	background-color: #c1a3a0;
+	background-color: #e0d1cf;
 	border: 2px solid transparent;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	cursor: pointer;
 }
 
 .slideshow-button:hover {
-	background-color: #e0d1cf;
+	background-color: #c1a3a0;
 }
 
 .slideshow-button:focus {
+	background-color: #c1a3a0;
 	outline: none;
 }
 
@@ -123,6 +129,7 @@ select {
 }
 
 select:focus {
+	background-color: #c1a3a0;
 	outline: none;
 }
 
@@ -138,8 +145,10 @@ select:focus {
 
 /* selected settings buttons */
 .selected {
-	background-color: #e0d1cf;
+	background-color: #c1a3a0;
 }
+
+/** #e0d1cf #c1a3a0 **/
 
 /* CITATION AREA */
 .citation-panel {
@@ -148,7 +157,7 @@ select:focus {
 	height: 125px;
 	border: 1px solid #dbdbdb;
 	border-radius: 10px;
-	margin: 35px 10px 0 0;
+	margin: 32px 10px 0 0;
 	background-color: #f7f7f7;
 	font-family: monospace;
 	font-size: 11px;

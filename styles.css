@@ -22,7 +22,7 @@
 .settings-panel {
 	position: absolute;
 	width: 250px;
-	height: 425px;
+	height: 410px;
 	border: 1px solid #dbdbdb;
 	border-radius: 10px;
 	margin: 0 10px 10px 10px;
@@ -127,7 +127,7 @@ select:focus {
 }
 
 .age-settings {
-	margin-top: 50px;
+	margin-top: 40px;
 	text-align: center;
 }
 
@@ -145,26 +145,27 @@ select:focus {
 .citation-panel {
 	position: absolute;
 	width: 250px;
-	height: 100px;
+	height: 125px;
 	border: 1px solid #dbdbdb;
 	border-radius: 10px;
-	margin: 35px 10px 10px 0;
+	margin: 35px 10px 0 0;
 	background-color: #f7f7f7;
 	font-family: monospace;
-	font-size: 9.5px;
+	font-size: 11px;
 }
 
 .citation-header {
-	font-size: 10.5px;
+	font-size: 12px;
 	font-weight: bold;
 	text-align: left;
 	margin-bottom: 0;
-	padding: 0 2px;
+	padding: 0 4px;
 }
 
 .citation-body {
-	margin-top: 5px;
-	padding: 0 2px;
+	margin-top: 2px;
+	margin-bottom: 5px;
+	padding: 0 5px;
 	text-align: left;
 }
 

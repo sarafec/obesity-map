@@ -139,12 +139,26 @@ select:focus {
 }
 
 /* MAP SETTINGS */
-
-.current-year {
-	text-align: center;
+.year-settings {
 	font-family: sans-serif;
-	font-size: 22px;
-	margin-top: -50px;
+	user-select: none;
+}
+
+.year-display {
+	font-size: 20px;
+	outline: none;
+}
+
+.year-forwards {
+	transform: translate(60px,4px);
+	font-size: 35px;
+	cursor: pointer;
+}
+
+.year-backwards {
+	transform: translate(-25px,4px);
+	font-size: 35px;
+	cursor: pointer;
 }
 
 /* MAP */

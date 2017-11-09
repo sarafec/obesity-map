@@ -13,7 +13,9 @@ let svg = d3.select('svg'),
 		margin = {top: 0, right: 0, bottom: 0, left: 0},
 		width = svg.attr('width') - margin.left - margin.right,
 		height = svg.attr('height') - margin.top - margin.bottom,
-		g = svg.append('g').attr('class', 'map-area').attr('transform', 'translate(' + margin.left + ',' +margin.top + ')');
+		g = svg.append('g').attr('class', 'map-area')
+		yearControls = svg.append('g').attr('class', 'year-settings').attr('transform', 'translate(300, 415)')
+		rangeElem = svg.append('g').attr('class', 'range-elem').attr('transform', 'translate(' + margin.left + ',' +margin.top + ')');
 
 
 /** XHR REQUEST **/
@@ -21,6 +23,8 @@ let svg = d3.select('svg'),
 d3.json('obesity.json', function(error, data) {
 	obesityObj = data;
 	drawMap();
+	drawYear();
+	drawRangeElem();
 });
 
 /** DRAW METHODS **/
@@ -55,6 +59,24 @@ function drawMap() {
 	});
 }
 
+function drawYear() {
+	yearControls.append('text')
+		.attr('class', 'year-backwards')
+		.attr('data-year-settings', 'backward')
+		.text('‹');
+	yearControls.append('text')
+		.attr('class', 'year-display')
+		.text(uiControlYear);
+	yearControls.append('text')
+		.attr('class', 'year-forwards')
+		.attr('data-year-settings', 'forward')
+		.text('›');
+}
+
+function drawRangeElem() {
+
+}
+
 /** FILL METHODS **/
 // set initial fill values in map
 function setFill(countryId) {
@@ -74,10 +96,9 @@ function setFill(countryId) {
 
 // update country fill value by traversing the map's path elements
 // and traversing the dataset with initial filtering by country and year
-// note - this is an improvement to traversing inital data set (150 mil lookups down to 60k), can we make it better?
+// note - this is an improvement to traversing inital data set (105 mil lookups down to 20k), can we make it better?
 function updateFill() {
 	let mapArea = document.querySelector('.map-area');
-	console.log(mapArea.children.length);
 	for(let i = 0; i < mapArea.children.length; i++) {
 		let countryId = mapArea.children[i].getAttribute('class');
 
@@ -183,6 +204,11 @@ function getTooltipText(data) {
 	let ageArea = document.querySelector('.age-settings');
 	ageArea.addEventListener('change', updateAgeControl);
 
+	// year area
+	let yearArea = document.querySelector('.year-settings');
+	yearArea.addEventListener('click', updateYearControl);
+	yearArea.addEventListener('touchend', updateYearControl);
+
 }());
 
 function updateAgeControl(evt) {
@@ -263,7 +289,7 @@ function updateSlideshowControl(evt) {
 }
 
 function startSlideshow() {
-	let yearOnMap = document.querySelector('.current-year');
+	let yearOnMap = document.querySelector('.year-display');
 	let slideshow = window.setInterval(function() {
 		// if on button is selected, cycle through the years
 		if(uiControlSlideShow === 'on') {
@@ -284,11 +310,34 @@ function startSlideshow() {
 
 }
 
+function updateYearControl(evt) {
+	let yearOnMap = document.querySelector('.year-display');
+	let direction = evt.target.dataset.yearSettings;
+	// change year in ui and call fill function based on direction selected
+	if(direction) {
+		if(direction === 'forward') {
+			if(uiControlYear === 2013) {
+				uiControlYear = 1990;
+			} else {
+				uiControlYear++;
+			}
+		} else if (direction === 'backward') {
+			if(uiControlYear === 1990) {
+				uiControlYear = 2013
+			} else {
+				uiControlYear--;
+			}
+		}
+
+		yearOnMap.textContent = uiControlYear;
+		updateFill();
+	}
+}
+
 
 //todo
 // 1 - add zoom to map
 // 2 - add color range element (svg)
-// 3 - modify year elements (svg)
 // 4 - add loading animation
 
 // loading - https://codepen.io/woodwork/pen/YWjWzo

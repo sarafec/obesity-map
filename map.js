@@ -15,7 +15,7 @@ let svg = d3.select('svg'),
 		height = svg.attr('height') - margin.top - margin.bottom,
 		g = svg.append('g').attr('class', 'map-area')
 		yearControls = svg.append('g').attr('class', 'year-settings').attr('transform', 'translate(300, 415)')
-		rangeElem = svg.append('g').attr('class', 'range-elem').attr('transform', 'translate(' + margin.left + ',' +margin.top + ')');
+		rangeElem = svg.append('g').attr('class', 'range-elem').attr('transform', 'translate(0, 435)');
 
 
 /** XHR REQUEST **/
@@ -74,6 +74,26 @@ function drawYear() {
 }
 
 function drawRangeElem() {
+	let colors = ['#006837', '#1a9850', '#66bd63', '#a6d96a', '#d9ef8b', '#fee08b', '#fdae61', '#f46d43', '#d73027', '#a50026'];
+	let range = ['5', '10', '15', '20', '25', '30', '35', '40', '45+'];
+
+	rangeElem.selectAll('rect')
+		.data(colors)
+		.enter()
+		.append('rect')
+		.attr('height', '20px')
+		.attr('width', '100px')
+		.attr('fill', function(d,i) { return d; })
+		.attr('transform', function(d,i) { return 'translate(' + i * 60 + ', 0)'; } )
+	rangeElem.selectAll('text')
+		.data(range)
+		.enter()
+		.append('text')
+		.attr('transform', function(d,i) { return 'translate(' + (60 * (i + 1) - 6)  + ', 12)'; } )
+		.text(function(d,i) { return range[i]; })
+		.style('font-family', 'sans-serif')
+		.style('font-size', '12px')
+		.style('font-weight', 'bold');
 
 }
 

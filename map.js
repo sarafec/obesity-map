@@ -20,7 +20,7 @@ let svg = d3.select('svg'),
 
 /** XHR REQUEST **/
 // http request for obesity data file
-d3.json('obesity.json', function(error, data) {
+d3.json('/data/obesity.json', function(error, data) {
 	obesityObj = data;
 	drawMap();
 	drawYear();
@@ -38,7 +38,7 @@ let path = d3.geoPath()
 
 // load geo json and draw country paths
 function drawMap() {
-	d3.json('world2.geo.json', function(error, map) {
+	d3.json('/data/world.geo.json', function(error, map) {
 	let features = map.features;
 
 	g.selectAll('path')
@@ -54,11 +54,14 @@ function drawMap() {
 		// set initial fill value based on country idea and ui controls
 		.attr('fill', function(d, i) { return setFill(features[i].properties.country_id); })
 		.on('mouseover', function(d) { return tooltip.style('visibility', 'visible'); })
-		.on('mousemove', function(d, i) { return tooltip.style('top', (event.pageY - 10) + 'px').style('left', (event.pageX + 10) + 'px').html(getTooltipText(d)) })
+		.on('mousemove', function(d, i) { return tooltip.style('top', (event.pageY - 10) + 'px').style('left', (event.pageX + 10) + 'px').html(getTooltipText(d)); })
 		.on('mouseout', function(d) { return tooltip.style('visibility', 'hidden'); });
 	});
+
+	removeLoading();
 }
 
+// draw year and year-related buttons
 function drawYear() {
 	yearControls.append('text')
 		.attr('class', 'year-backwards')
@@ -73,6 +76,7 @@ function drawYear() {
 		.text('›');
 }
 
+// draw static range element
 function drawRangeElem() {
 	let colors = ['#006837', '#1a9850', '#66bd63', '#a6d96a', '#d9ef8b', '#fee08b', '#fdae61', '#f46d43', '#d73027', '#a50026'];
 	let range = ['5', '10', '15', '20', '25', '30', '35', '40', '45+'];
@@ -95,6 +99,13 @@ function drawRangeElem() {
 		.style('font-size', '12px')
 		.style('font-weight', 'bold');
 
+}
+
+// remove loading icon after draw methods run
+function removeLoading() {
+	let loadingElem = document.querySelector('.loading-animation');
+
+	loadingElem.style.display = 'none';
 }
 
 /** FILL METHODS **/
@@ -352,10 +363,3 @@ function updateYearControl(evt) {
 		updateFill();
 	}
 }
-
-
-//todo
-// 1 - add loading animation
-
-// loading - https://codepen.io/woodwork/pen/YWjWzo
-// loading - https://codepen.io/magnus16/pen/BKoRNw

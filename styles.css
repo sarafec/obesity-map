@@ -22,15 +22,15 @@
 .settings-panel {
 	position: absolute;
 	width: 250px;
-	height: 475px;
+	height: 425px;
 	border: 1px solid #dbdbdb;
-	border-radius: 1.5%;
+	border-radius: 10px;
 	margin: 0 10px 10px 10px;
 	background-color: #f7f7f7;
 }
 
 .gender-settings {
-	margin: 25px 0 10px 0;
+	margin: 15px 0 10px 0;
 	background-color: #c1a3a0;
 	font-size: 0;
 }
@@ -42,6 +42,7 @@
 	padding: 15px;
 	background-color: #c1a3a0;
 	border: 2px solid transparent;
+	cursor: pointer;
 }
 
 .gender-button:hover {
@@ -53,7 +54,7 @@
 }
 
 .category-settings {
-	margin: 50px 0 0 0;
+	margin: 40px 0 0 0;
 	background-color: #c1a3a0;
 	font-size: 0;
 }
@@ -65,6 +66,7 @@
 	padding: 15px;
 	background-color: #c1a3a0;
 	border: 2px solid transparent;
+	cursor: pointer;
 }
 
 .category-button:hover {
@@ -76,7 +78,7 @@
 }
 
 .slideshow-settings {
-	margin: 50px 0 0 0;
+	margin: 40px 0 0 0;
 	font-size: 0;
 }
 
@@ -98,6 +100,7 @@
 	background-color: #c1a3a0;
 	border: 2px solid transparent;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
 }
 
 .slideshow-button:hover {
@@ -138,6 +141,33 @@ select:focus {
 	background-color: #e0d1cf;
 }
 
+/* CITATION AREA */
+.citation-panel {
+	position: absolute;
+	width: 250px;
+	height: 100px;
+	border: 1px solid #dbdbdb;
+	border-radius: 10px;
+	margin: 35px 10px 10px 0;
+	background-color: #f7f7f7;
+	font-family: monospace;
+	font-size: 9.5px;
+}
+
+.citation-header {
+	font-size: 10.5px;
+	font-weight: bold;
+	text-align: left;
+	margin-bottom: 0;
+	padding: 0 2px;
+}
+
+.citation-body {
+	margin-top: 5px;
+	padding: 0 2px;
+	text-align: left;
+}
+
 /* MAP SETTINGS */
 .year-settings {
 	font-family: sans-serif;
@@ -163,12 +193,12 @@ select:focus {
 
 /* MAP */
 .map-panel {
-	margin: 20px 0 0 280px;
+	margin: 20px 0 0 275px;
 }
 
 .map {
 	border: 1px solid #dbdbdb;
-	border-radius: 1.5%;
+	border-radius: 10px;
 }
 
 .tooltip {

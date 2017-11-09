@@ -207,7 +207,6 @@ function getTooltipText(data) {
 	// year area
 	let yearArea = document.querySelector('.year-settings');
 	yearArea.addEventListener('click', updateYearControl);
-	yearArea.addEventListener('touchend', updateYearControl);
 
 }());
 

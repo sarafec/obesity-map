@@ -20,7 +20,7 @@ let svg = d3.select('svg'),
 
 /** XHR REQUEST **/
 // http request for obesity data file
-d3.json('/data/obesity.json', function(error, data) {
+d3.json('obesity.json', function(error, data) {
 	obesityObj = data;
 	drawMap();
 	drawYear();
@@ -38,7 +38,7 @@ let path = d3.geoPath()
 
 // load geo json and draw country paths
 function drawMap() {
-	d3.json('/data/world.geo.json', function(error, map) {
+	d3.json('world.geo.json', function(error, map) {
 	let features = map.features;
 
 	g.selectAll('path')

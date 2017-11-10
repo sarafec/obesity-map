@@ -217,64 +217,60 @@ select:focus {
 
 /* LOADING ANIMATION */
 .loading-animation {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 400px;
-  width: 1200px;
+	position: absolute;
+	top: 30%;
+	left: 50%
 }
 
 .loading-items {
-  top: 50%;
-  position: absolute;
-  width: calc(100% - 200px);
-  padding: 0 100px;
-  text-align: center;
+	width: calc(100% - 200px);
+	padding: 0 100px;
+	text-align: center;
 }
 
 .loading-items div {
-  font-size: 25px;
-  opacity: 0.5;
-  display:inline-block;
+	font-size: 25px;
+	opacity: 0.5;
+	display:inline-block;
 }
 
 @keyframes enlarge {
-  0% {
-    font-size: 25px;
-  }
-  20% {
-    font-size: 35px;
-  }
-  40% {
-    font-size: 45px;
-  }
-  60% {
-    font-size: 35px;
-  }
-  80% {
-    font-size: 35px;
-  }
-  100% {
-    font-size: 25px;
-  }
+	0% {
+		font-size: 25px;
+	}
+	20% {
+		font-size: 35px;
+	}
+	40% {
+		font-size: 45px;
+	}
+	60% {
+		font-size: 35px;
+	}
+	80% {
+		font-size: 35px;
+	}
+	100% {
+		font-size: 25px;
+	}
 }
 
 .loading-items div:nth-child(5) {
-  animation: enlarge 2s linear 100ms infinite;
+	animation: enlarge 2s linear 100ms infinite;
 }
 
 .loading-items div:nth-child(4) {
-  animation: enlarge 2s linear 200ms infinite;
+	animation: enlarge 2s linear 200ms infinite;
 }
 
 .loading-items div:nth-child(3) {
-  animation: enlarge 2s linear 300ms infinite;
+	animation: enlarge 2s linear 300ms infinite;
 }
 
 .loading-items div:nth-child(2) {
-  animation: enlarge 2s linear 400ms infinite;
+	animation: enlarge 2s linear 400ms infinite;
 }
 
 .loading-items div:nth-child(1) {
-  animation: enlarge 2s linear 500ms infinite;
+	animation: enlarge 2s linear 500ms infinite;
 }

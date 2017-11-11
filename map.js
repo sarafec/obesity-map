@@ -1,4 +1,4 @@
-/** XHR REQUEST **/
+/** XHR **/
 d3.json('obesity.json', function(error, data) {
 	if(error) {
 		console.log('The data file did not load. Please refresh the page.');
@@ -109,7 +109,7 @@ let uiControls = function() {
 			}
 
 			yearOnMap.textContent = uiControls.year;
-			fill.updateColor()
+			fill.updateColor();
 		}
 	}
 
@@ -166,7 +166,7 @@ let uiControls = function() {
 		year: uiYear,
 		slideshow: uiSlideshow,
 
-		// public methods - update ui
+		// public methods - update ui controls
 		updateGender: updateUIGender,
 		updateMetric: updateUIMetric,
 		updateAge: updateUIAge,
@@ -181,11 +181,11 @@ let uiControls = function() {
 let draw = function() {
 	// helper methods - for drawing geojson
 	let projection = d3.geoMercator()
-						.scale(90)
-						.translate([290,300]);
+			.scale(90)
+			.translate([290,300]);
 
 	let path = d3.geoPath()
-				.projection(projection);
+			.projection(projection);
 
 	function drawMap() {
 		d3.json('world.geo.json', function(error, map) {
@@ -269,6 +269,8 @@ let draw = function() {
 /** FILL MODULE **/
 // contains methods to set the fill of svg path elements within the map
 let fill = function(countryId) {
+
+	// set initial fill for map's path elements
 	function setFillColor(countryId) {
 		if (countryId === 999) {
 			return '#D3D3D3';
@@ -305,7 +307,7 @@ let fill = function(countryId) {
 		}
 	}
 
-	// private method - determine fill value based on mean 
+	// private method - determine fill value based on country's mean value 
 	function determineFillColor(mean) {
 		let realNum = +(mean * 100).toFixed(1);
 
@@ -358,7 +360,7 @@ let tooltip = function() {
 		let meanVal;
 
 		// get mean values for countries
-		if(countryId === '999') {
+		if(countryId === 999) {
 				return 'Country: ' + countryName + '<br>' + 'No data available';
 		} else {
 			let values = constant.obesityObj[countryId][uiControls.year];
@@ -386,29 +388,29 @@ let tooltip = function() {
 /** UI EVENTS **/
 (function setEventListeners(){
 
-	// gender area
+	// gender control area
 	let genderArea = document.querySelector('.gender-settings');
 	genderArea.addEventListener('click', uiControls.updateGender);
 	genderArea.addEventListener('focus', uiControls.updateGender);
 	genderArea.addEventListener('touchend', uiControls.updateGender);
 
-	// metric area
+	// metric control area
 	let metricArea = document.querySelector('.category-settings');
 	metricArea.addEventListener('click', uiControls.updateMetric);
 	metricArea.addEventListener('focus', uiControls.updateMetric);
 	metricArea.addEventListener('touchend', uiControls.updateMetric);
 
-	// slideshow area
+	// slideshow control area
 	let slideshowArea = document.querySelector('.slideshow-settings');
 	slideshowArea.addEventListener('click', uiControls.updateSlideshow);
 	slideshowArea.addEventListener('focus', uiControls.updateSlideshow);
 	slideshowArea.addEventListener('touchend', uiControls.updateSlideshow);
 
-	// age area
+	// age control area
 	let ageArea = document.querySelector('.age-settings');
 	ageArea.addEventListener('change', uiControls.updateAge);
 
-	// year area
+	// year control area
 	let yearArea = document.querySelector('.year-settings');
 	yearArea.addEventListener('click', uiControls.updateYear);
 

@@ -6210,9 +6210,9 @@
     {
       "type": "Feature",
       "properties": {
-        "country_id": 102,
-        "country_acronym": "USA",
-        "country_name": "United States"
+        "country_id": 999,
+        "country_acronym": "PR",
+        "country_name": "Puerto Rico"
       },
       "geometry": {
         "type": "Polygon",
@@ -10711,9 +10711,9 @@
     {
       "type": "Feature",
       "properties": {
-        "country_id": 95,
-        "country_acronym": "GBR",
-        "country_name": "United Kingdom"
+        "country_id": 999,
+        "country_acronym": "FALK",
+        "country_name": "Falkland Islands"
       },
       "geometry": {
         "type": "Polygon",
@@ -33195,9 +33195,9 @@
     {
       "type": "Feature",
       "properties": {
-        "country_id": 80,
-        "country_acronym": "FRA",
-        "country_name": "France"
+        "country_id": 999,
+        "country_acronym": "NCL",
+        "country_name": "New Caledonia"
       },
       "geometry": {
         "type": "Polygon",

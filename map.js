@@ -205,7 +205,7 @@ let draw = function() {
 			// set initial fill value based on country idea and ui controls
 			.attr('fill', function(d, i) { return fill.setColor(features[i].properties.country_id); })
 			.on('mouseover', function(d) { return tooltip.element.style('visibility', 'visible'); })
-			.on('mousemove', function(d, i) { return tooltip.element.style('top', (event.pageY - 10) + 'px').style('left', (event.pageX + 10) + 'px').html(tooltip.getText(d)); })
+			.on('mousemove', function(d, i) { return tooltip.element.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px').html(tooltip.getText(d)); })
 			.on('mouseout', function(d) { return tooltip.element.style('visibility', 'hidden'); });
 		});
 

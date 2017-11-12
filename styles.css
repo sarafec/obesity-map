@@ -207,6 +207,14 @@ select:focus {
 	border-radius: 10px;
 }
 
+.map-area {
+	transform: translate(10px,-20px);
+}
+
+.range-elem {
+	transform: translate(0px, 435px);
+}
+
 .tooltip {
 	background-color: #f0f0f0;
 	font-family: sans-serif;

@@ -1,10 +1,19 @@
 /** XHR **/
-d3.json('obesity.json', function(error, data) {
-	if(error) {
-		console.log('The data file did not load. Please refresh the page.');
-	}
+// d3.json('obesity.json', function(error, data) {
+// 	if(error) {
+// 		console.log('The data file did not load. Please refresh the page.');
+// 	}
 
-	// load data into object in constant module
+// 	// load data into object in constant module
+// 	constant.obesityObj = data;
+// 	// draw svg elements to screen
+// 	draw.map();
+// 	draw.year();
+// 	draw.range();
+// });
+
+/** FETCH API **/
+d3.json('obesity.json').then(function(data) {
 	constant.obesityObj = data;
 	// draw svg elements to screen
 	draw.map();
@@ -188,26 +197,50 @@ let draw = function() {
 			.projection(projection);
 
 	function drawMap() {
-		d3.json('world.geo.json', function(error, map) {
-		let features = map.features;
-		let g = constant.svg.append('g').attr('class', 'map-area');
+		// xhr
+		// d3.json('world.geo.json', function(error, map) {
+		// 	let features = map.features;
+		// 	let g = constant.svg.append('g').attr('class', 'map-area');
 
-		g.selectAll('path')
-			.data(features)
-			.enter()
-			.append('path')
-			// draw country path from csv geo data
-			.attr('d', function(d) { return path(d) })
-			// add country id from csv geo property data
-			.attr('class', function(d,i) { return features[i].properties.country_id})
-			.attr('stroke', 'lightgrey')
-			.attr('stroke-width', .5)
-			// set initial fill value based on country idea and ui controls
-			.attr('fill', function(d, i) { return fill.setColor(features[i].properties.country_id); })
-			.on('mouseover', function(d) { return tooltip.element.style('visibility', 'visible'); })
-			.on('mousemove', function(d, i) { return tooltip.element.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px').html(tooltip.getText(d)); })
-			.on('mouseout', function(d) { return tooltip.element.style('visibility', 'hidden'); });
-		});
+		// 	g.selectAll('path')
+		// 		.data(features)
+		// 		.enter()
+		// 		.append('path')
+		// 		// draw country path from csv geo data
+		// 		.attr('d', function(d) { return path(d) })
+		// 		// add country id from csv geo property data
+		// 		.attr('class', function(d,i) { return features[i].properties.country_id})
+		// 		.attr('stroke', 'lightgrey')
+		// 		.attr('stroke-width', .5)
+		// 		// set initial fill value based on country idea and ui controls
+		// 		.attr('fill', function(d, i) { return fill.setColor(features[i].properties.country_id); })
+		// 		.on('mouseover', function(d) { return tooltip.element.style('visibility', 'visible'); })
+		// 		.on('mousemove', function(d, i) { return tooltip.element.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px').html(tooltip.getText(d)); })
+		// 		.on('mouseout', function(d) { return tooltip.element.style('visibility', 'hidden'); });
+		// });
+
+		// fetch
+		d3.json('world.geo.json').then(function(map) {
+			let features = map.features;
+			let g = constant.svg.append('g').attr('class', 'map-area');
+
+			g.selectAll('path')
+				.data(features)
+				.enter()
+				.append('path')
+				// draw country path from csv geo data
+				.attr('d', function(d) { return path(d) })
+				// add country id from csv geo property data
+				.attr('class', function(d,i) { return features[i].properties.country_id})
+				.attr('stroke', 'lightgrey')
+				.attr('stroke-width', .5)
+				// set initial fill value based on country idea and ui controls
+				.attr('fill', function(d, i) { return fill.setColor(features[i].properties.country_id); })
+				.on('mouseover', function(d) { return tooltip.element.style('visibility', 'visible'); })
+				.on('mousemove', function(d, i) { return tooltip.element.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px').html(tooltip.getText(d)); })
+				.on('mouseout', function(d) { return tooltip.element.style('visibility', 'hidden'); });
+		})
+
 
 		// remove css loading animation
 		removeLoading();
@@ -229,7 +262,7 @@ let draw = function() {
 	}
 
 	function drawRange() {
-		let rangeElem = constant.svg.append('g').attr('class', 'range-elem').attr('transform', 'translate(0, 435)');
+		let rangeElem = constant.svg.append('g').attr('class', 'range-elem');
 		let colors = ['#006837', '#1a9850', '#66bd63', '#a6d96a', '#d9ef8b', '#fee08b', '#fdae61', '#f46d43', '#d73027', '#a50026'];
 		let range = ['5', '10', '15', '20', '25', '30', '35', '40', '45+'];
 
@@ -414,4 +447,25 @@ let tooltip = function() {
 	let yearArea = document.querySelector('.year-settings');
 	yearArea.addEventListener('click', uiControls.updateYear);
 
+}());
+
+/** REGISTER SERVICE WORKER **/
+(function registerServiceWorker() {
+	if ('serviceWorker' in navigator) {
+		navigator.serviceWorker.register('/service-worker.js', { scope: '/obesity-map/'})
+		.then(function(reg) {
+			console.log('SW registered ' + reg.scope);
+
+			if (reg.installing) {
+				console.log('Service worker installing');
+			} else if (reg.waiting) {
+				console.log('Service worker installed');
+			} else if (reg.active) {
+				console.log('Service worker active');
+			}
+
+		}).catch(function(error) {
+			console.log('Registration failed - ' + error);
+		});
+	}
 }());

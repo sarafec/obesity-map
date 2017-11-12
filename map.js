@@ -452,7 +452,7 @@ let tooltip = function() {
 /** REGISTER SERVICE WORKER **/
 (function registerServiceWorker() {
 	if ('serviceWorker' in navigator) {
-		navigator.serviceWorker.register('/service-worker.js', { scope: '/obesity-map/'})
+		navigator.serviceWorker.register('/obesity-map/service-worker.js', { scope: '/obesity-map/'})
 		.then(function(reg) {
 			console.log('SW registered ' + reg.scope);
 

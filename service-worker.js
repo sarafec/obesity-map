@@ -4,9 +4,10 @@ self.addEventListener('install', function (event) {
         caches.open('v1').then(function (cache) {
             return cache.addAll([
                 '/obesity-map/',
-                '/obesity-mapindex.html',
+                '/obesity-map/index.html',
                 '/obesity-map/styles.css',
                 '/obesity-map/map.js',
+                '/obesity-map/service-worker.js',
                 '/obesity-map/world.geo.json',
                 '/obesity-map/obesity.json'
             ]);

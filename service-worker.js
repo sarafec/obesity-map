@@ -1,4 +1,5 @@
-
+/** SERVICE WORKER EVENTS **/
+// adds files to cache
 self.addEventListener('install', function (event) {
     event.waitUntil(
         caches.open('v1').then(function (cache) {
@@ -15,10 +16,11 @@ self.addEventListener('install', function (event) {
     );
 });
 
+// listens for fetch event and responds accordingly
 self.addEventListener('fetch', function (event) {
     event.respondWith(
         caches.match(event.request).then(function(response) {
-            // if response body is not undefined return response
+            // if the file is found, return it
             if (response !== undefined) {
                 return response;
 
@@ -30,7 +32,8 @@ self.addEventListener('fetch', function (event) {
                     caches.open('v1').then(function (cache) {
                         cache.put(event.request, responseClone);
                     });
-                return response;
+                    
+                    return response;
                 });
             }
         })

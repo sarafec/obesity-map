@@ -1,25 +1,35 @@
-/** XHR **/
-// d3.json('obesity.json', function(error, data) {
-// 	if(error) {
-// 		console.log('The data file did not load. Please refresh the page.');
-// 	}
 
-// 	// load data into object in constant module
-// 	constant.obesityObj = data;
-// 	// draw svg elements to screen
-// 	draw.map();
-// 	draw.year();
-// 	draw.range();
-// });
+/** DATA FILE REQUEST **/
+// note - service workers don't use xhr, but browsers without the fetch api
+// need xhr. This is the workaround.
+if(window.fetch){
+	// fetch api
+	fetch('obesity.json').then(function(response){
+		return response.json();
+	}).then(function(data){
+		loadMapElems(data);
+	}).catch(function(err){
+		console.log('The data file did not load. Please refresh the page.');
+	});
+} else {
+	// xhr
+	d3.json('obesity.json', function(error, data) {
+		if(error) {
+			console.log('The data file did not load. Please refresh the page.');
+		}
+		loadMapElems(data);
+	});
+}
 
-/** FETCH API **/
-d3.json('obesity.json').then(function(data) {
+function loadMapElems(data) {
+	// load data into object in constant module
 	constant.obesityObj = data;
 	// draw svg elements to screen
 	draw.map();
 	draw.year();
 	draw.range();
-});
+}
+
 
 /** CONSTANT MODULE **/
 // contains constants that are used throughout the application
@@ -33,9 +43,6 @@ let constant = function() {
 	return {
 		//public variables - constants
 		svg: mapSvg,
-		margin: mapMargin,
-		width: mapWidth,
-		height: mapHeight,
 		obesityObj: obesityObject
 	};
 }();
@@ -196,51 +203,43 @@ let draw = function() {
 	let path = d3.geoPath()
 			.projection(projection);
 
-	function drawMap() {
-		// xhr
-		// d3.json('world.geo.json', function(error, map) {
-		// 	let features = map.features;
-		// 	let g = constant.svg.append('g').attr('class', 'map-area');
+	// fetch request global path data
+	function loadMap() {
+		if(window.fetch){
+			// fetch api
+			fetch('world.geo.json').then(function(response){
+				return response.json();
+			}).then(function(map){
+				drawMap(map);
+			});
+		} else {
+			// xhr
+			d3.json('world.geo.json', function(error, map){
+				drawMap(map);
+			});
+		}
+	}
 
-		// 	g.selectAll('path')
-		// 		.data(features)
-		// 		.enter()
-		// 		.append('path')
-		// 		// draw country path from csv geo data
-		// 		.attr('d', function(d) { return path(d) })
-		// 		// add country id from csv geo property data
-		// 		.attr('class', function(d,i) { return features[i].properties.country_id})
-		// 		.attr('stroke', 'lightgrey')
-		// 		.attr('stroke-width', .5)
-		// 		// set initial fill value based on country idea and ui controls
-		// 		.attr('fill', function(d, i) { return fill.setColor(features[i].properties.country_id); })
-		// 		.on('mouseover', function(d) { return tooltip.element.style('visibility', 'visible'); })
-		// 		.on('mousemove', function(d, i) { return tooltip.element.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px').html(tooltip.getText(d)); })
-		// 		.on('mouseout', function(d) { return tooltip.element.style('visibility', 'hidden'); });
-		// });
+	// private method - draw map using geo json data
+	function drawMap(map) {
+		let features = map.features;
+		let g = constant.svg.append('g').attr('class', 'map-area');
 
-		// fetch
-		d3.json('world.geo.json').then(function(map) {
-			let features = map.features;
-			let g = constant.svg.append('g').attr('class', 'map-area');
-
-			g.selectAll('path')
-				.data(features)
-				.enter()
-				.append('path')
-				// draw country path from csv geo data
-				.attr('d', function(d) { return path(d) })
-				// add country id from csv geo property data
-				.attr('class', function(d,i) { return features[i].properties.country_id})
-				.attr('stroke', 'lightgrey')
-				.attr('stroke-width', .5)
-				// set initial fill value based on country idea and ui controls
-				.attr('fill', function(d, i) { return fill.setColor(features[i].properties.country_id); })
-				.on('mouseover', function(d) { return tooltip.element.style('visibility', 'visible'); })
-				.on('mousemove', function(d, i) { return tooltip.element.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px').html(tooltip.getText(d)); })
-				.on('mouseout', function(d) { return tooltip.element.style('visibility', 'hidden'); });
-		})
-
+		g.selectAll('path')
+			.data(features)
+			.enter()
+			.append('path')
+			// draw country path from csv geo data
+			.attr('d', function(d) { return path(d) })
+			// add country id from csv geo property data
+			.attr('class', function(d,i) { return features[i].properties.country_id})
+			.attr('stroke', 'lightgrey')
+			.attr('stroke-width', .5)
+			// set initial fill value based on country idea and ui controls
+			.attr('fill', function(d, i) { return fill.setColor(features[i].properties.country_id); })
+			.on('mouseover', function(d) { return tooltip.element.style('visibility', 'visible'); })
+			.on('mousemove', function(d, i) { return tooltip.element.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px').html(tooltip.getText(d)); })
+			.on('mouseout', function(d) { return tooltip.element.style('visibility', 'hidden'); });
 
 		// remove css loading animation
 		removeLoading();
@@ -293,7 +292,7 @@ let draw = function() {
 
 	return {
 		// public methods - draw svg elements
-		map: drawMap,
+		map: loadMap,
 		year: drawYear,
 		range: drawRange
 	}
@@ -320,7 +319,6 @@ let fill = function(countryId) {
 
 	// update country fill value by traversing the map's path elements
 	// and traversing the dataset by initial filtering by country and year
-	// note - this is an improvement to traversing inital data set (105 mil lookups down to 20k), can we make it better?
 	function updateFillColor() {
 		let mapArea = document.querySelector('.map-area');
 		for(let i = 0; i < mapArea.children.length; i++) {
@@ -381,11 +379,11 @@ let fill = function(countryId) {
 // contains tooltip element definition and a method to update tooltip data
 let tooltip = function() {
 	let elementDef = d3.select('.map-panel')
-						.append('div')
-						.attr('class', 'tooltip')
-						.style('position', 'absolute')
-						.style('z-index', '10')
-						.style('visibility', 'hidden');
+			.append('div')
+			.attr('class', 'tooltip')
+			.style('position', 'absolute')
+			.style('z-index', '10')
+			.style('visibility', 'hidden');
 
 	function getTooltipText(data) {
 		let countryName = data.properties.country_name;
@@ -454,8 +452,8 @@ let tooltip = function() {
 	if ('serviceWorker' in navigator) {
 		navigator.serviceWorker.register('/obesity-map/service-worker.js', { scope: '/obesity-map/'})
 		.then(function(reg) {
-			console.log('SW registered ' + reg.scope);
 
+			// feedback on service worker installation process
 			if (reg.installing) {
 				console.log('Service worker installing');
 			} else if (reg.waiting) {

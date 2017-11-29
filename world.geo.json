@@ -3970,9 +3970,9 @@
     {
       "type": "Feature",
       "properties": {
-        "country_id": 78,
-        "country_acronym": "DNK",
-        "country_name": "Denmark"
+        "country_id": 999,
+        "country_acronym": "GRL",
+        "country_name": "Greenland"
       },
       "geometry": {
         "type": "Polygon",

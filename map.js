@@ -147,31 +147,10 @@ let uiControls = function() {
 		}
 
 		// start slideshow while on button is selected
-		if(uiControls.slideshow === 'on') {
-			startSlideshow();
+		if(uiControls.slideshow === 'on' && !slideshow.isPlaying) {
+			slideshow.isPlaying = true;
+			slideshow.play();
 		}
-	}
-
-	// private method - kick off year cycling
-	function startSlideshow() {
-		let yearOnMap = document.querySelector('.year-display');
-		let slideshow = window.setInterval(function() {
-			// if on button is selected, cycle through the years
-			if(uiControls.slideshow === 'on') {
-				if(uiControls.year < 2013) {
-					uiControls.year++;
-					yearOnMap.textContent = uiControls.year;
-					fill.updateColor();
-				} else {
-					uiControls.year = 1990;
-					yearOnMap.textContent = uiControls.year;
-					fill.updateColor();
-				}
-			// if off button is selected, clear interval
-			} else {
-				clearInterval(slideshow);
-			}
-		}, 1000);
 	}
 
 	function updateUIRange(evt) {
@@ -199,20 +178,62 @@ let uiControls = function() {
 	};
 }();
 
+// contains variables and methods related to cycling through the years 
+let slideshow = function() {
+	let isSlideshowPlaying = false;
 
+	// cycle years on map
+	function playSlideshow() {
+		let yearOnMap = document.querySelector('.year-display');
+
+		let playYears = window.setInterval(function() {
+			// if on button is selected, cycle through the years
+			if(uiControls.slideshow === 'on') {
+				if(uiControls.year < 2013) {
+					uiControls.year++;
+					yearOnMap.textContent = uiControls.year;
+					fill.updateColor();
+				} else {
+					uiControls.year = 1990;
+					yearOnMap.textContent = uiControls.year;
+					fill.updateColor();
+				}
+			// if off button is selected, clear interval
+			} else {
+				resetSlideshow();
+				clearInterval(playYears);
+			}
+		}, 1000);
+	}
+
+	// when off button is selected, reset isPlaying value to false
+	function resetSlideshow() {
+		slideshow.isPlaying = false;
+	}
+
+	return {
+		// public variable and methods for play functionality
+		isPlaying: isSlideshowPlaying,
+		play: playSlideshow
+
+	}
+}();
+
+
+// contains variables and methods related to selections in the range area elements
 let highlight = function() {
-	// this array will change based on the selection chosen
+	// this array will change based on the range selection chosen
 	let rangesSelected = [true, true, true, true, true, true, true, true, true, true];
 
 	function setSelectedRanges(index) {
-		// if all are selected - return only the clicked range element
+		// if all are selected - return only the selected range element
 		if(findTotalSelected() === 10) {
 			for(let i = 0; i < rangesSelected.length; i++) {
 				rangesSelected[i] = false;
 			}
 		}
 
-		// toggle current value for given index
+		// toggle current value for the index provided via the rangeArea click event
 		rangesSelected[index] = !rangesSelected[index];
 
 		// if none are selected - return all the range elements
@@ -238,6 +259,7 @@ let highlight = function() {
 	}
 
 	return {
+		// public method for range selection functionality
 		selected: rangesSelected,
 		setRanges: setSelectedRanges
 	}
@@ -395,6 +417,7 @@ let fill = function(countryId) {
 	function determineFillColor(mean) {
 		let realNum = +(mean * 100).toFixed(1);
 
+		// defines what index in the highlight.selected array realNum would be represented
 		let rangeIndex;
 
 		if(realNum > 45.1) {
@@ -434,9 +457,12 @@ let fill = function(countryId) {
 	}
 
 	function updateRangeFill(selectedRanges) {
+		// array of range colors
 		let colors = ['#006837', '#1a9850', '#66bd63', '#a6d96a', '#d9ef8b', '#fee08b', '#fdae61', '#f46d43', '#d73027', '#a50026'];
+		// array-like object (HTMLCollection) of range elements
 		let rangeElems = document.querySelector('.range-elem').children;
 
+		// fill range element if highlight.selected array is true
 		for(let i = 0; i < highlight.selected.length; i++) {
 			if(highlight.selected[i]) {
 				rangeElems[i].setAttribute('style', 'fill: ' + colors[i]);

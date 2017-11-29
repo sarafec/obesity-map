@@ -333,7 +333,8 @@ let draw = function() {
 			.text(function(d,i) { return range[i]; })
 			.style('font-family', 'sans-serif')
 			.style('font-size', '12px')
-			.style('font-weight', 'bold');
+			.style('font-weight', 'bold')
+			.style('user-select', 'none');
 	}
 
 	// private method - remove loading css animation

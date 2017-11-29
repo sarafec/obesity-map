@@ -174,6 +174,12 @@ let uiControls = function() {
 		}, 1000);
 	}
 
+	function updateUIRange(evt) {
+		let selectedRangeIndex = evt.target.dataset.range;
+
+		highlight.setRanges(selectedRangeIndex);
+	}
+
 	return {
 		// public variables - ui controls
 		gender: uiGender,
@@ -187,9 +193,54 @@ let uiControls = function() {
 		updateMetric: updateUIMetric,
 		updateAge: updateUIAge,
 		updateYear: updateUIYear,
-		updateSlideshow: updateUISlideshow
+		updateSlideshow: updateUISlideshow,
+		updateRange: updateUIRange
 
 	};
+}();
+
+
+let highlight = function() {
+	// this array will change based on the selection chosen
+	let rangesSelected = [true, true, true, true, true, true, true, true, true, true];
+
+	function setSelectedRanges(index) {
+		// if all are selected - return only the clicked range element
+		if(findTotalSelected() === 10) {
+			for(let i = 0; i < rangesSelected.length; i++) {
+				rangesSelected[i] = false;
+			}
+		}
+
+		// toggle current value for given index
+		rangesSelected[index] = !rangesSelected[index];
+
+		// if none are selected - return all the range elements
+		// note: the first for loop and this for loop cannot be combined because the click event must make its changes
+		// either before or after for the desired effect to take place
+		if(findTotalSelected() === 0) {
+			for(let i = 0; i < rangesSelected.length; i++) {
+				rangesSelected[i] = true;
+			}
+		}
+	
+		// update fill within range elem
+		fill.updateColor();
+		fill.updateRange();
+	}
+
+	function findTotalSelected() {
+		let sumSelected = rangesSelected.reduce(function(a,b) {
+			return a + b;
+		});
+
+		return sumSelected;
+	}
+
+	return {
+		selected: rangesSelected,
+		setRanges: setSelectedRanges
+	}
 }();
 
 /** DRAW MODULE **/
@@ -261,7 +312,7 @@ let draw = function() {
 	}
 
 	function drawRange() {
-		let rangeElem = constant.svg.append('g').attr('class', 'range-elem');
+		let rangeElem = d3.select('.range-elem');
 		let colors = ['#006837', '#1a9850', '#66bd63', '#a6d96a', '#d9ef8b', '#fee08b', '#fdae61', '#f46d43', '#d73027', '#a50026'];
 		let range = ['5', '10', '15', '20', '25', '30', '35', '40', '45+'];
 
@@ -270,7 +321,8 @@ let draw = function() {
 			.enter()
 			.append('rect')
 			.attr('height', '20px')
-			.attr('width', '100px')
+			.attr('width', '60px')
+			.attr('data-range', function(d,i) { return i; })
 			.attr('fill', function(d,i) { return d; })
 			.attr('transform', function(d,i) { return 'translate(' + i * 60 + ', 0)'; } )
 		rangeElem.selectAll('text')
@@ -342,36 +394,62 @@ let fill = function(countryId) {
 	function determineFillColor(mean) {
 		let realNum = +(mean * 100).toFixed(1);
 
-		switch(true) {
-			case realNum >= 0 && realNum <= 5:
-			return '#006837';
-			case realNum >= 5.1 && realNum <= 10:
-			return '#1a9850';
-			case realNum >= 10.1 && realNum <= 15:
-			return '#66bd63';
-			case realNum >= 15.1 && realNum <= 20:
-			return '#a6d96a';
-			case realNum >= 20.1 && realNum <= 25:
-			return '#d9ef8b';
-			case realNum >= 25.1 && realNum <= 30:
-			return '#fee08b';
-			case realNum >= 30.1 && realNum <= 35:
-			return '#fdae61';
-			case realNum >= 35.1 && realNum <= 40:
-			return '#f46d43';
-			case realNum >= 40.1 && realNum <= 45:
-			return '#d73027';
-			case realNum >= 45.1:
-			return '#a50026';
-			default:
-			return '#D3D3D3';
+		let rangeIndex;
+
+		if(realNum > 45.1) {
+			rangeIndex = 9;
+		} else {
+			rangeIndex = Math.floor(realNum/5);
 		}
+
+		if(highlight.selected[rangeIndex]) {
+			switch(true) {
+				case realNum >= 0 && realNum <= 5:
+				return '#006837';
+				case realNum >= 5.1 && realNum <= 10:
+				return '#1a9850';
+				case realNum >= 10.1 && realNum <= 15:
+				return '#66bd63';
+				case realNum >= 15.1 && realNum <= 20:
+				return '#a6d96a';
+				case realNum >= 20.1 && realNum <= 25:
+				return '#d9ef8b';
+				case realNum >= 25.1 && realNum <= 30:
+				return '#fee08b';
+				case realNum >= 30.1 && realNum <= 35:
+				return '#fdae61';
+				case realNum >= 35.1 && realNum <= 40:
+				return '#f46d43';
+				case realNum >= 40.1 && realNum <= 45:
+				return '#d73027';
+				case realNum >= 45.1:
+				return '#a50026';
+				default:
+				return '#D3D3D3';
+			}				
+		}
+
+		return '#D3D3D3';
+	}
+
+	function updateRangeFill(selectedRanges) {
+		let colors = ['#006837', '#1a9850', '#66bd63', '#a6d96a', '#d9ef8b', '#fee08b', '#fdae61', '#f46d43', '#d73027', '#a50026'];
+		let rangeElems = document.querySelector('.range-elem').children;
+
+		for(let i = 0; i < highlight.selected.length; i++) {
+			if(highlight.selected[i]) {
+				rangeElems[i].setAttribute('style', 'fill: ' + colors[i]);
+			} else {
+				rangeElems[i].setAttribute('style', 'fill: #D3D3D3');
+			}
+		} 
 	}
 
 	return {
 		// public methods - set and update the fill of country paths
 		setColor: setFillColor,
-		updateColor: updateFillColor
+		updateColor: updateFillColor,
+		updateRange: updateRangeFill
 	};
 }();
 
@@ -422,20 +500,14 @@ let tooltip = function() {
 	// gender control area
 	let genderArea = document.querySelector('.gender-settings');
 	genderArea.addEventListener('click', uiControls.updateGender);
-	genderArea.addEventListener('focus', uiControls.updateGender);
-	genderArea.addEventListener('touchend', uiControls.updateGender);
 
 	// metric control area
 	let metricArea = document.querySelector('.category-settings');
 	metricArea.addEventListener('click', uiControls.updateMetric);
-	metricArea.addEventListener('focus', uiControls.updateMetric);
-	metricArea.addEventListener('touchend', uiControls.updateMetric);
 
 	// slideshow control area
 	let slideshowArea = document.querySelector('.slideshow-settings');
 	slideshowArea.addEventListener('click', uiControls.updateSlideshow);
-	slideshowArea.addEventListener('focus', uiControls.updateSlideshow);
-	slideshowArea.addEventListener('touchend', uiControls.updateSlideshow);
 
 	// age control area
 	let ageArea = document.querySelector('.age-settings');
@@ -444,6 +516,10 @@ let tooltip = function() {
 	// year control area
 	let yearArea = document.querySelector('.year-settings');
 	yearArea.addEventListener('click', uiControls.updateYear);
+
+	// range control area
+	let rangeArea = document.querySelector('.range-elem');
+	rangeArea.addEventListener('click', uiControls.updateRange)
 
 }());
 

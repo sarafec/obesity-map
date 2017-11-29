@@ -213,6 +213,7 @@ select:focus {
 
 .range-elem {
 	transform: translate(0px, 435px);
+	cursor: pointer;
 }
 
 .tooltip {

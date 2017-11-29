@@ -420,7 +420,7 @@ let fill = function(countryId) {
 		// defines what index in the highlight.selected array realNum would be represented
 		let rangeIndex;
 
-		if(realNum > 45.1) {
+		if(realNum > 45) {
 			rangeIndex = 9;
 		} else {
 			rangeIndex = Math.floor(realNum/5);
@@ -428,25 +428,25 @@ let fill = function(countryId) {
 
 		if(highlight.selected[rangeIndex]) {
 			switch(true) {
-				case realNum >= 0 && realNum <= 5:
+				case realNum >= 0 && realNum <= 4.9:
 				return '#006837';
-				case realNum >= 5.1 && realNum <= 10:
+				case realNum >= 5 && realNum <= 9.9:
 				return '#1a9850';
-				case realNum >= 10.1 && realNum <= 15:
+				case realNum >= 10 && realNum <= 14.9:
 				return '#66bd63';
-				case realNum >= 15.1 && realNum <= 20:
+				case realNum >= 15 && realNum <= 19.9:
 				return '#a6d96a';
-				case realNum >= 20.1 && realNum <= 25:
+				case realNum >= 20 && realNum <= 24.9:
 				return '#d9ef8b';
-				case realNum >= 25.1 && realNum <= 30:
+				case realNum >= 25 && realNum <= 29.9:
 				return '#fee08b';
-				case realNum >= 30.1 && realNum <= 35:
+				case realNum >= 30 && realNum <= 34.9:
 				return '#fdae61';
-				case realNum >= 35.1 && realNum <= 40:
+				case realNum >= 35 && realNum <= 39.9:
 				return '#f46d43';
-				case realNum >= 40.1 && realNum <= 45:
+				case realNum >= 40 && realNum <= 44.9:
 				return '#d73027';
-				case realNum >= 45.1:
+				case realNum >= 45:
 				return '#a50026';
 				default:
 				return '#D3D3D3';

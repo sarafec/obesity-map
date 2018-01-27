@@ -178,6 +178,7 @@ let uiControls = function() {
 	};
 }();
 
+/** SLIDESHOW MODULE **/
 // contains variables and methods related to cycling through the years 
 let slideshow = function() {
 	let isSlideshowPlaying = false;
@@ -220,6 +221,7 @@ let slideshow = function() {
 }();
 
 
+/** HIGHLIGHT MODULE **/
 // contains variables and methods related to selections in the range area elements
 let highlight = function() {
 	// this array will change based on the range selection chosen
@@ -250,6 +252,7 @@ let highlight = function() {
 		fill.updateRange();
 	}
 
+	// reduces the rangesSelected array down to check if all ranges are selected(10) or no ranges are selected (0)
 	function findTotalSelected() {
 		let sumSelected = rangesSelected.reduce(function(a,b) {
 			return a + b;

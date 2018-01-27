@@ -17,6 +17,7 @@ Ideally, yes! This visualization uses Service Workers to store files in Cache St
 #### Where can I find this visualization?
 It is available at [https://sarafec.github.io/obesity-map/](https://sarafec.github.io/obesity-map/).  
   
-JavaScript Libraries Used: d3.js  
+JavaScript Libraries Used: d3.js   
+  
 
-
+![a gif](https://raw.githubusercontent.com/sarafec/obesity-map/master/obesity.gif)

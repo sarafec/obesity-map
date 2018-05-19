@@ -28,7 +28,7 @@ function loadMapElems(data) {
 
 /** CONSTANT MODULE **/
 // contains constants values that are used throughout the application
-let constant = function() {
+const constant = function() {
 	let mapSvg = d3.select('svg');
 	let mapMargin = {top: 0, right: 0, bottom: 0, left: 0};
 	let mapWidth = mapSvg.attr('width') - mapMargin.left - mapMargin.right;
@@ -43,7 +43,7 @@ let constant = function() {
 
 /** UI CONTROLS MODULE **/
 // contains ui controls and their update methods
-let uiControls = function() {
+const uiControls = function() {
 	let uiGender = 'both';
 	let uiMetric = 'obese';
 	let uiAge = '38';
@@ -172,7 +172,7 @@ let uiControls = function() {
 
 /** SLIDESHOW MODULE **/
 // contains variables and methods related to cycling through the years 
-let slideshow = function() {
+const slideshow = function() {
 	let isSlideshowPlaying = false;
 
 	// cycle years on map
@@ -212,7 +212,7 @@ let slideshow = function() {
 
 /** HIGHLIGHT MODULE **/
 // contains variables and methods related to selections in the range area elements
-let highlight = function() {
+const highlight = function() {
 	// this array will change based on the range selection chosen
 	let rangesSelected = [true, true, true, true, true, true, true, true, true, true];
 
@@ -258,7 +258,7 @@ let highlight = function() {
 
 /** DRAW MODULE **/
 // contains methods to draw svg elements to screen
-let draw = function() {
+const draw = function() {
 	let projection = d3.geoMercator()
 			.scale(90)
 			.translate([290,300]);
@@ -359,7 +359,7 @@ let draw = function() {
 
 /** FILL MODULE **/
 // contains methods to set the fill of svg path elements within the map
-let fill = function(countryId) {
+const fill = function(countryId) {
 
 	// set initial fill for map's path elements
 	function setFillColor(countryId) {
@@ -411,25 +411,25 @@ let fill = function(countryId) {
 
 		if(highlight.selected[rangeIndex]) {
 			switch(true) {
-				case realNum >= 0 && realNum <= 4.9:
+				case realNum >= 0 && realNum <= 5:
 				return '#006837';
-				case realNum >= 5 && realNum <= 9.9:
+				case realNum >= 5.1 && realNum <= 10:
 				return '#1a9850';
-				case realNum >= 10 && realNum <= 14.9:
+				case realNum >= 10.1 && realNum <= 15:
 				return '#66bd63';
-				case realNum >= 15 && realNum <= 19.9:
+				case realNum >= 15.1 && realNum <= 20:
 				return '#a6d96a';
-				case realNum >= 20 && realNum <= 24.9:
+				case realNum >= 20.1 && realNum <= 25:
 				return '#d9ef8b';
-				case realNum >= 25 && realNum <= 29.9:
+				case realNum >= 25.1 && realNum <= 30:
 				return '#fee08b';
-				case realNum >= 30 && realNum <= 34.9:
+				case realNum >= 30.1 && realNum <= 35:
 				return '#fdae61';
-				case realNum >= 35 && realNum <= 39.9:
+				case realNum >= 35.1 && realNum <= 40:
 				return '#f46d43';
-				case realNum >= 40 && realNum <= 44.9:
+				case realNum >= 40.1 && realNum <= 45:
 				return '#d73027';
-				case realNum >= 45:
+				case realNum >= 45.1:
 				return '#a50026';
 				default:
 				return '#D3D3D3';
@@ -463,7 +463,7 @@ let fill = function(countryId) {
 
 /** TOOLTIP MODULE **/
 // contains tooltip element definition and a method to update tooltip data
-let tooltip = function() {
+const tooltip = function() {
 	let elementDef = d3.select('.map-panel')
 			.append('div')
 			.attr('class', 'tooltip')

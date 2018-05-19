@@ -1,9 +1,7 @@
 
 /** DATA FILE REQUEST **/
-// note - service workers don't use xhr, but browsers without the fetch api
-// need xhr. This is the workaround.
+// note - service workers don't use xhr, but browsers that haven't implemented the fetch api need xhr. This is the current workaround.
 if(window.fetch){
-	// fetch api
 	fetch('obesity.json').then(function(response){
 		return response.json();
 	}).then(function(data){
@@ -12,7 +10,6 @@ if(window.fetch){
 		console.log('The data file did not load. Please refresh the page.');
 	});
 } else {
-	// xhr
 	d3.json('obesity.json', function(error, data) {
 		if(error) {
 			console.log('The data file did not load. Please refresh the page.');
@@ -22,9 +19,7 @@ if(window.fetch){
 }
 
 function loadMapElems(data) {
-	// load data into object in constant module
 	constant.obesityObj = data;
-	// draw svg elements to screen
 	draw.map();
 	draw.year();
 	draw.range();
@@ -32,7 +27,7 @@ function loadMapElems(data) {
 
 
 /** CONSTANT MODULE **/
-// contains constants that are used throughout the application
+// contains constants values that are used throughout the application
 let constant = function() {
 	let mapSvg = d3.select('svg');
 	let mapMargin = {top: 0, right: 0, bottom: 0, left: 0};
@@ -41,7 +36,6 @@ let constant = function() {
 	let obesityObject = {};
 
 	return {
-		//public variables - constants
 		svg: mapSvg,
 		obesityObj: obesityObject
 	};
@@ -91,7 +85,6 @@ let uiControls = function() {
 		// update global ui control
 		uiControls.metric = selectedBtn.dataset.metric;
 
-		//kick off fill function using new metric criteria
 		fill.updateColor();
 	}
 
@@ -101,7 +94,6 @@ let uiControls = function() {
 		// update global ui control
 		uiControls.age = evt.target[selectedIndex].dataset.age;
 
-		//kick off fill function using new age criteria
 		fill.updateColor()
 	}
 
@@ -188,7 +180,6 @@ let slideshow = function() {
 		let yearOnMap = document.querySelector('.year-display');
 
 		let playYears = window.setInterval(function() {
-			// if on button is selected, cycle through the years
 			if(uiControls.slideshow === 'on') {
 				if(uiControls.year < 2013) {
 					uiControls.year++;
@@ -207,13 +198,11 @@ let slideshow = function() {
 		}, 1000);
 	}
 
-	// when off button is selected, reset isPlaying value to false
 	function resetSlideshow() {
 		slideshow.isPlaying = false;
 	}
 
 	return {
-		// public variable and methods for play functionality
 		isPlaying: isSlideshowPlaying,
 		play: playSlideshow
 
@@ -262,7 +251,6 @@ let highlight = function() {
 	}
 
 	return {
-		// public method for range selection functionality
 		selected: rangesSelected,
 		setRanges: setSelectedRanges
 	}
@@ -271,7 +259,6 @@ let highlight = function() {
 /** DRAW MODULE **/
 // contains methods to draw svg elements to screen
 let draw = function() {
-	// helper methods - for drawing geojson
 	let projection = d3.geoMercator()
 			.scale(90)
 			.translate([290,300]);
@@ -279,24 +266,20 @@ let draw = function() {
 	let path = d3.geoPath()
 			.projection(projection);
 
-	// fetch request global path data
 	function loadMap() {
 		if(window.fetch){
-			// fetch api
 			fetch('world.geo.json').then(function(response){
 				return response.json();
 			}).then(function(map){
 				drawMap(map);
 			});
 		} else {
-			// xhr
 			d3.json('world.geo.json', function(error, map){
 				drawMap(map);
 			});
 		}
 	}
 
-	// private method - draw map using geo json data
 	function drawMap(map) {
 		let features = map.features;
 		let g = constant.svg.append('g').attr('class', 'map-area');
@@ -307,11 +290,9 @@ let draw = function() {
 			.append('path')
 			// draw country path from csv geo data
 			.attr('d', function(d) { return path(d) })
-			// add country id from csv geo property data
 			.attr('class', function(d,i) { return features[i].properties.country_id})
 			.attr('stroke', 'lightgrey')
 			.attr('stroke-width', .5)
-			// set initial fill value based on country idea and ui controls
 			.attr('fill', function(d, i) { return fill.setColor(features[i].properties.country_id); })
 			.on('mouseover', function(d) { return tooltip.element.style('visibility', 'visible'); })
 			.on('mousemove', function(d, i) { return tooltip.element.style('top', (d3.event.pageY - 10) + 'px').style('left', (d3.event.pageX + 10) + 'px').html(tooltip.getText(d)); })
@@ -416,7 +397,6 @@ let fill = function(countryId) {
 		}
 	}
 
-	// private method - determine fill value based on country's mean value 
 	function determineFillColor(mean) {
 		let realNum = +(mean * 100).toFixed(1);
 
@@ -460,9 +440,7 @@ let fill = function(countryId) {
 	}
 
 	function updateRangeFill(selectedRanges) {
-		// array of range colors
 		let colors = ['#006837', '#1a9850', '#66bd63', '#a6d96a', '#d9ef8b', '#fee08b', '#fdae61', '#f46d43', '#d73027', '#a50026'];
-		// array-like object (HTMLCollection) of range elements
 		let rangeElems = document.querySelector('.range-elem').children;
 
 		// fill range element if highlight.selected array is true
@@ -516,10 +494,7 @@ let tooltip = function() {
 	}
 
 	return {
-		// public variables - tooltip html element
 		element: elementDef,
-
-		// public methods - update tooltip data
 		getText: getTooltipText
 	};
 }();
